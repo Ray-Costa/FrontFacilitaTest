@@ -12,6 +12,7 @@ export const RegisterPage = () => {
 
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleError = () => {
         return <ErrorToast error={error} setError={setError}/>;
@@ -28,10 +29,20 @@ export const RegisterPage = () => {
         }
     };
 
+    const onSearchSubmit = async (term) => {
+        try {
+            await listUsers(setUsers, term);
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
+            throw error;
+        }
+    }
+
     return (
         <main>
             <div>
-                <Search/>
+                <Search onSubmit={onSearchSubmit} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
             </div>
             <div>
                 <section>

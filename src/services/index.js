@@ -5,9 +5,9 @@ export const api = axios.create({
     timeout: 8 * 1000,
 });
 
-export const listUsers = async (setUsers) => {
+export const listUsers = async (setUsers, term) => {
     try {
-        const {data} = await api.get('/users');
+        const {data} = await api.get(term? `/users?term=${term}` : '/users');
         setUsers([...data]);
     } catch (error) {
         console.log(error);
@@ -23,10 +23,10 @@ export const createUser = async (payload) => {
     }
 };
 
-export const filterUsers = async (setUsers, search) => {
+export const filterUser = async (setUser, search) => {
     try {
         const {data} = await api.get(`/users`, {params: search});
-        setUsers([...data]);
+        setUser([...data]);
     } catch (error) {
         console.log(error);
     }

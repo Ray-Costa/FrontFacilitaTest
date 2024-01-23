@@ -1,11 +1,12 @@
-import {useState} from 'react';
 
-
-export const Search = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const handleSearch = () => {
-        console.log('Pesquisando por:', searchTerm);
+export const Search = ({setSearchTerm, searchTerm, onSubmit }) => {
+    const _onSubmit = async () => {
+        try {
+            await onSubmit(searchTerm);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     };
 
     return (
@@ -18,7 +19,7 @@ export const Search = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="input"
                 />
-                <button onClick={handleSearch} className="buttoSearch">
+                <button onClick={_onSubmit} className="buttoSearch">
                     Pesquisar
                 </button>
             </div>

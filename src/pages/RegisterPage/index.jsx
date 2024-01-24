@@ -1,9 +1,10 @@
 import {RegisterForm} from '../../components/RegisterForm/index.jsx';
-import {createUser, listUsers} from '../../services/index.js';
+import {calculateRoute, createUser, listUsers} from '../../services/index.js';
 import {UserList} from '../../components/UserList/index.jsx';
 import {useEffect, useState} from 'react';
 import ErrorToast from '../../components/Toast/index.jsx';
 import {Search} from '../../components/Search/index.jsx';
+import {AcessRouterModal} from '../../components/AcessRouterModal/index.jsx';
 
 export const RegisterPage = () => {
     useEffect(() => {
@@ -13,6 +14,9 @@ export const RegisterPage = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [route, setRoute] = useState({});
+    const [totalDistance, setTotalDistance] = useState(0);
 
     const handleError = () => {
         return <ErrorToast error={error} setError={setError}/>;
@@ -29,6 +33,25 @@ export const RegisterPage = () => {
         }
     };
 
+    const toggleModal = async () => {
+        try {
+
+            if (!isModalOpen) {
+                const data = await calculateRoute();
+                setRoute(data.route);
+                setTotalDistance(data.totalDistance);
+            }
+            setModalOpen(!isModalOpen);
+
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
+            throw error;
+        }
+
+
+    };
+
     const onSearchSubmit = async (term) => {
         try {
             await listUsers(setUsers, term);
@@ -37,7 +60,7 @@ export const RegisterPage = () => {
             setError(error.message);
             throw error;
         }
-    }
+    };
 
     return (
         <main>
@@ -49,6 +72,12 @@ export const RegisterPage = () => {
                     <h1>Registro de usuários</h1>
                     <RegisterForm onSubmit={onSubmit}/>
                 </section>
+                <div>
+                    <button className="button" type="button" onClick={toggleModal}>
+                        Exibir Rota
+                    </button>
+                    {isModalOpen && <AcessRouterModal totalDistance={totalDistance} route={route}/>}
+                </div>
                 <section>
                     <h1>Lista de usuários</h1>
                     <UserList users={users}/>

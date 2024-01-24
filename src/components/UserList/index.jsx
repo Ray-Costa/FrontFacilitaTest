@@ -7,6 +7,8 @@ export const UserList = ({users}) => {
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
+                    <th>Localização X</th>
+                    <th>Localização Y</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -15,7 +17,10 @@ export const UserList = ({users}) => {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.phoneNumber}</td>
+                        <td>{user.x}</td>
+                        <td>{user.y}</td>
                     </tr>
+
                 ))}
                 </tbody>
             </table>

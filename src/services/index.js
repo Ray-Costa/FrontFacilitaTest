@@ -31,3 +31,15 @@ export const filterUser = async (setUser, search) => {
         console.log(error);
     }
 }
+
+export const calculateRoute = async() => {
+    try {
+        const {data} = await api.get(`/location-routes`);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
